@@ -64,7 +64,7 @@ final class LumenRouteExtractor implements RouteExtractorInterface
     private function extractParameters(string $uri): array
     {
         $parsed = $this->routeParser->parse($uri);
-        $first = \reset($parsed);
+        $first = \reset($parsed) ?: [];
 
         $parameters = \array_filter($first, static function ($element): bool {
             return \is_array($element) === true;

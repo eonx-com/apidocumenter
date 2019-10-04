@@ -6,6 +6,6 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Fixtures;
 /**
  * @coversNothing
  */
-final class Request
+final class Request implements RequestInterface
 {
 }

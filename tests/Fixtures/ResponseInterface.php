@@ -6,6 +6,6 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Fixtures;
 /**
  * @coversNothing
  */
-final class Response implements ResponseInterface
+interface ResponseInterface
 {
 }
