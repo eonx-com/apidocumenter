@@ -1,0 +1,41 @@
+{
+  "name": "loyaltycorp/apidocumenter",
+  "description": "Library for generation of OpenAPI v3 documentation",
+  "keywords": [
+    "loyaltycorp",
+    "apidoc"
+  ],
+  "license": "BSD-3-Clause",
+  "type": "library",
+  "require": {
+    "php": ">=7.3",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "eoneopay/standards": "dev-master",
+    "friendsofphp/php-cs-fixer": "^2.9",
+    "phpmd/phpmd": "^2.6",
+    "phpstan/phpstan": "^0.11",
+    "phpstan/phpstan-phpunit": "^0.11",
+    "phpstan/phpstan-strict-rules": "^0.11",
+    "phpunit/phpunit": "^8.0",
+    "roave/security-advisories": "dev-master",
+    "sebastian/phpcpd": "^4.0",
+    "squizlabs/php_codesniffer": "3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "LoyaltyCorp\\ApiDocumenter\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\LoyaltyCorp\\ApiDocumenter\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
