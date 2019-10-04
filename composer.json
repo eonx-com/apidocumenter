@@ -3,17 +3,23 @@
   "description": "Library for generation of OpenAPI v3 documentation",
   "keywords": [
     "loyaltycorp",
-    "apidoc"
+    "apidoc",
+    "openapi"
   ],
   "license": "BSD-3-Clause",
   "type": "library",
   "require": {
     "php": ">=7.3",
-    "ext-json": "*"
+    "ext-json": "*",
+    "cebe/php-openapi": "^1.2",
+    "phpdocumentor/reflection-docblock": "^4.3",
+    "symfony/property-info": "^4.3"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",
     "friendsofphp/php-cs-fixer": "^2.9",
+    "laravel/lumen-framework": "^6.1",
+    "nikic/fast-route": "^1.3",
     "phpmd/phpmd": "^2.6",
     "phpstan/phpstan": "^0.11",
     "phpstan/phpstan-phpunit": "^0.11",
@@ -22,6 +28,10 @@
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^4.0",
     "squizlabs/php_codesniffer": "3.*"
+  },
+  "suggest": {
+    "laravel/lumen-framework": "Required when using apidocumenter with Lumen",
+    "nikic/fast-route": "Required when using apidocumenter with Lumen"
   },
   "autoload": {
     "psr-4": {
