@@ -1,6 +1,5 @@
 *.cache
 .env
 .idea
-/storage
 /vendor
 .phpunit.result.cache
