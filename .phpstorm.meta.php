@@ -9,7 +9,4 @@
 
 namespace PHPSTORM_META {
 
-    override(\LoyaltyCorp\Multitenancy\Externals\Interfaces\ORM\EntityManagerInterface::getRepository(0), map([
-        '' => \LoyaltyCorp\Multitenancy\Externals\Interfaces\ORM\RepositoryInterface::class
-    ]));
 }
