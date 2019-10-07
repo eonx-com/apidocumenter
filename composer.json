@@ -34,6 +34,9 @@
     "nikic/fast-route": "Required when using apidocumenter with Lumen"
   },
   "autoload": {
+    "files": [
+      "src/Generator/buildReference.php"
+    ],
     "psr-4": {
       "LoyaltyCorp\\ApiDocumenter\\": "src/"
     }
