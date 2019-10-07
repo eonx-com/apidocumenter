@@ -9,6 +9,13 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures;
 final class PublicProperties
 {
     /**
+     * A property that should not appear anywhere because it is prefixed with an underscore.
+     *
+     * @var null
+     */
+    public $_skipThis;
+
+    /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass
      */
     public $empty;
@@ -23,12 +30,12 @@ final class PublicProperties
     /**
      * @var string
      */
-    public $string;
+    public $string; // phpcs:ignore
 
-    public $typeless; // phpcs:ignore
+    public $typeless;
 
-    /**
+        /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\ValueObject[]
      */
-    public $values = [];
+    public $values = []; // phpcs:ignore
 }
