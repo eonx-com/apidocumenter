@@ -12,6 +12,16 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
 
+/**
+ * The class finder is used to traverse a graph of object classes and return
+ * a list of all classes that were found during that traversal.
+ *
+ * It is used to have a list of all objects that may be returned by the API
+ * so that Schema objects can be built for any possible returned values.
+ *
+ * The class can be configured to skip objects that should be considered as
+ * value objects (and that the serialiser will turn into scalar objects).
+ */
 final class ClassFinder
 {
     /**
@@ -75,7 +85,8 @@ final class ClassFinder
     }
 
     /**
-     * Looks for related classes.
+     * Traverse all properties of a class and look for type hints that indicate
+     * the property is an instance of another class.
      *
      * @param string[] $found
      * @param string $class
@@ -124,7 +135,7 @@ final class ClassFinder
     }
 
     /**
-     * Finds a class for a type, if one exists.
+     * Extracts a class out of a PropertyInfo type, if one can be found.
      *
      * @param \Symfony\Component\PropertyInfo\Type $type
      *
