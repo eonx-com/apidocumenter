@@ -10,13 +10,12 @@ use EoneoPay\Utils\UtcDateTime;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ClassFinder
 {
     /**
-     * @var PropertyInfoExtractorInterface
+     * @var \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface
      */
     private $propertyInfo;
 
@@ -81,28 +80,26 @@ final class ClassFinder
      * @param string[] $found
      * @param string $class
      *
-     * @return string[]
+     * @return void
      */
-    private function extractClasses(array &$found, string $class): array
+    private function extractClasses(array &$found, string $class): void
     {
         // If what we've found isnt a real class there is nothing to find.
         if (\class_exists($class) === false &&
             \interface_exists($class) === false) {
-            return [];
+            return;
         }
 
         // We've already seen the class or it should be skipped based on configuration.
         if (\in_array($class, $found, true) === true ||
             $this->shouldSkip($class)
         ) {
-            return [];
+            return;
         }
 
         $found[] = $class;
 
         $properties = $this->getProperties($class);
-
-        $discovered = [];
 
         foreach ($properties as $property) {
             $types = $this->propertyInfo->getTypes($class, $property);
@@ -124,14 +121,12 @@ final class ClassFinder
                 $this->extractClasses($found, $foundClass);
             }
         }
-
-        return $discovered;
     }
 
     /**
      * Finds a class for a type, if one exists.
      *
-     * @param Type $type
+     * @param \Symfony\Component\PropertyInfo\Type $type
      *
      * @return string|null
      */
