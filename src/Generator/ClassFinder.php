@@ -7,22 +7,11 @@ use DateTime as BaseDatetime;
 use DateTimeInterface;
 use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\UtcDateTime;
-use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\ClassFinderInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
-/**
- * The class finder is used to traverse a graph of object classes and return
- * a list of all classes that were found during that traversal.
- *
- * It is used to have a list of all objects that may be returned by the API
- * so that Schema objects can be built for any possible returned values.
- *
- * The class can be configured to skip objects that should be considered as
- * value objects (and that the serialiser will turn into scalar objects).
- */
-final class ClassFinder
+final class ClassFinder implements ClassFinderInterface
 {
     /**
      * @var \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface
@@ -37,41 +26,19 @@ final class ClassFinder
     /**
      * Constructor.
      *
+     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface $propertyInfo
      * @param string[] $skipClasses
      */
     public function __construct(
+        PropertyInfoExtractorInterface $propertyInfo,
         array $skipClasses
     ) {
-        // This is constructed and not injected because it is not intended to be customisable.
-        // The extractors are configured explicitly for the purposes of finding classes.
-        $phpDocExtractor = new PhpDocExtractor();
-        $reflectionExtractor = new ReflectionExtractor(
-            null,
-            null,
-            null,
-            true,
-            ReflectionExtractor::ALLOW_PRIVATE |
-                ReflectionExtractor::ALLOW_PROTECTED |
-                ReflectionExtractor::ALLOW_PUBLIC
-        );
-
-        $this->propertyInfo = new PropertyInfoExtractor(
-            [$reflectionExtractor],
-            [$phpDocExtractor, $reflectionExtractor],
-            [$phpDocExtractor],
-            [],
-            []
-        );
-
+        $this->propertyInfo = $propertyInfo;
         $this->skipClasses = $skipClasses;
     }
 
     /**
-     * Extracts classes out of an array of class strings.
-     *
-     * @param string[] $classes
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function extract(array $classes): array
     {

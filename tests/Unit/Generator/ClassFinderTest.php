@@ -5,6 +5,9 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator;
 
 use DateTime;
 use LoyaltyCorp\ApiDocumenter\Generator\ClassFinder;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\PrivateProperties;
@@ -86,7 +89,25 @@ final class ClassFinderTest extends TestCase
      */
     public function testClassFinder(array $search, array $expected, ?array $skip = null): void
     {
-        $finder = new ClassFinder($skip ?? []);
+        $phpDocExtractor = new PhpDocExtractor();
+        $reflectionExtractor = new ReflectionExtractor(
+            null,
+            null,
+            null,
+            true,
+            ReflectionExtractor::ALLOW_PRIVATE |
+            ReflectionExtractor::ALLOW_PROTECTED |
+            ReflectionExtractor::ALLOW_PUBLIC
+        );
+        $propertyInfo = new PropertyInfoExtractor(
+            [$reflectionExtractor],
+            [$phpDocExtractor, $reflectionExtractor],
+            [$phpDocExtractor],
+            [],
+            []
+        );
+
+        $finder = new ClassFinder($propertyInfo, $skip ?? []);
 
         $result = $finder->extract($search);
 
