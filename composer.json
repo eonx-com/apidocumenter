@@ -38,7 +38,7 @@
   },
   "autoload": {
     "files": [
-      "src/Generator/buildReference.php"
+      "src/SchemaBuilders/buildReference.php"
     ],
     "psr-4": {
       "LoyaltyCorp\\ApiDocumenter\\": "src/"
