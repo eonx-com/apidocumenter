@@ -12,9 +12,11 @@
     "php": ">=7.3",
     "ext-json": "*",
     "cebe/php-openapi": "^1.2",
+    "doctrine/orm": "^2.6",
     "eoneopay/utils": "^0.2.10",
     "phpdocumentor/reflection-docblock": "^4.3",
-    "symfony/property-info": "^4.3"
+    "symfony/property-info": "^4.3",
+    "symfony/serializer": "^4.3"
   },
   "require-dev": {
     "eoneopay/standards": "dev-master",
@@ -36,7 +38,7 @@
   },
   "autoload": {
     "files": [
-      "src/Generator/buildReference.php"
+      "src/SchemaBuilders/buildReference.php"
     ],
     "psr-4": {
       "LoyaltyCorp\\ApiDocumenter\\": "src/"

@@ -6,7 +6,7 @@ parameters:
     ignoreErrors:
         -
             message: '#Variable property access on cebe\\openapi\\spec\\PathItem\.#'
-            path: src/Generator/RouteConverter.php
+            path: src/Routing/RouteToPathItemConverter.php
         -
-            message: '#Property Tests\\LoyaltyCorp\\ApiDocumenter\\Unit\\Generator\\Fixtures\\PublicProperties::\$typeless has no typehint specified\.#'
-            path: tests/Unit/Generator/Fixtures/PublicProperties.php
+            message: '#Property Tests\\LoyaltyCorp\\ApiDocumenter\\Unit\\SchemaBuilders\\Fixtures\\PublicProperties::\$typeless has no typehint specified\.#'
+            path: tests/Unit/SchemaBuilders/Fixtures/PublicProperties.php
