@@ -8,7 +8,9 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\EntityRequestSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Exceptions\UnsupportedClassException;
-use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Externals\ORM\ManagerRegistryStub;
+use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM\ClassMetadataFactoryStub;
+use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM\ManagerRegistryStub;
+use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM\ObjectManagerStub;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\SchemaBuilders\Fixtures\PublicProperties;
 
@@ -51,16 +53,10 @@ final class EntityRequestSchemaBuilderTest extends TestCase
      */
     public function testBuild(): void
     {
-        $factory = $this->createMock(ClassMetadataFactory::class);
-        $factory->expects(self::once())
-            ->method('isTransient')
-            ->with(PublicProperties::class)
-            ->willReturn(false);
-
-        $manager = $this->createMock(ObjectManager::class);
-        $manager->expects(self::once())
-            ->method('getMetadataFactory')
-            ->willReturn($factory);
+        $factory = new ClassMetadataFactoryStub([
+            PublicProperties::class => false
+        ]);
+        $manager = new ObjectManagerStub($factory);
 
         $managerRegistry = new ManagerRegistryStub([
             PublicProperties::class => $manager,
@@ -122,16 +118,10 @@ final class EntityRequestSchemaBuilderTest extends TestCase
      */
     public function testSupportsFalseWhenTransient(): void
     {
-        $factory = $this->createMock(ClassMetadataFactory::class);
-        $factory->expects(self::once())
-            ->method('isTransient')
-            ->with(PublicProperties::class)
-            ->willReturn(true);
-
-        $manager = $this->createMock(ObjectManager::class);
-        $manager->expects(self::once())
-            ->method('getMetadataFactory')
-            ->willReturn($factory);
+        $factory = new ClassMetadataFactoryStub([
+            PublicProperties::class => true
+        ]);
+        $manager = new ObjectManagerStub($factory);
 
         $managerRegistry = new ManagerRegistryStub([
             PublicProperties::class => $manager,
@@ -150,16 +140,10 @@ final class EntityRequestSchemaBuilderTest extends TestCase
      */
     public function testSupports(): void
     {
-        $factory = $this->createMock(ClassMetadataFactory::class);
-        $factory->expects(self::once())
-            ->method('isTransient')
-            ->with(PublicProperties::class)
-            ->willReturn(false);
-
-        $manager = $this->createMock(ObjectManager::class);
-        $manager->expects(self::once())
-            ->method('getMetadataFactory')
-            ->willReturn($factory);
+        $factory = new ClassMetadataFactoryStub([
+            PublicProperties::class => false
+        ]);
+        $manager = new ObjectManagerStub($factory);
 
         $managerRegistry = new ManagerRegistryStub([
             PublicProperties::class => $manager,

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\Externals\ORM;
+namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
