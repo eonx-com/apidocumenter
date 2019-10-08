@@ -5,6 +5,6 @@ namespace LoyaltyCorp\ApiDocumenter\Generator\Exceptions;
 
 use RuntimeException;
 
-class UnsupportedClassException extends RuntimeException
+final class UnsupportedClassException extends RuntimeException
 {
 }

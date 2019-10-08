@@ -21,7 +21,7 @@ final class CustomEntityRequestSchemaBuilderTest extends TestCase
     public function testSupports(): void
     {
         $builder = new CustomEntityRequestSchemaBuilder([
-            'PurpleElephants' => 'code'
+            'PurpleElephants' => 'code',
         ]);
 
         self::assertFalse($builder->supports('GreenElephants'));
@@ -38,15 +38,15 @@ final class CustomEntityRequestSchemaBuilderTest extends TestCase
     public function testOutputSchema(): void
     {
         $builder = new CustomEntityRequestSchemaBuilder([
-            'PurpleElephants' => 'code'
+            'PurpleElephants' => 'code',
         ]);
 
         $expected = new Schema([
             'properties' => [
                 'code' => new Schema([
-                    'type' => 'string'
-                ])
-            ]
+                    'type' => 'string',
+                ]),
+            ],
         ]);
 
         $actual = $builder->buildSchema('PurpleElephants');
@@ -64,7 +64,7 @@ final class CustomEntityRequestSchemaBuilderTest extends TestCase
     public function testOutputSchemaUnsupported(): void
     {
         $builder = new CustomEntityRequestSchemaBuilder([
-            'PurpleElephants' => 'code'
+            'PurpleElephants' => 'code',
         ]);
 
         $this->expectException(UnsupportedClassException::class);
