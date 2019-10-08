@@ -13,9 +13,18 @@ final class PublicProperties
     /**
      * A property that should not appear anywhere because it is prefixed with an underscore.
      *
+     * Longer Description.
+     *
      * @var null
      */
     public $_skipThis; // phpcs:ignore
+
+    /**
+     * MULTIBALL.
+     *
+     * @var int|string
+     */
+    public $dualType;
 
     /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass

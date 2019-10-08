@@ -5,10 +5,10 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator;
 
 use DateTime;
 use LoyaltyCorp\ApiDocumenter\Generator\ClassFinder;
-use LoyaltyCorp\ApiDocumenter\Generator\PropertyRetriever;
+use LoyaltyCorp\ApiDocumenter\Generator\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor as BasePropertyInfoExtractor;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\PrivateProperties;
@@ -102,7 +102,7 @@ final class ClassFinderTest extends TestCase
             ReflectionExtractor::ALLOW_PROTECTED |
             ReflectionExtractor::ALLOW_PUBLIC
         );
-        $propertyInfo = new PropertyInfoExtractor(
+        $propertyInfo = new BasePropertyInfoExtractor(
             [$reflectionExtractor],
             [$phpDocExtractor, $reflectionExtractor],
             [$phpDocExtractor],
@@ -110,7 +110,7 @@ final class ClassFinderTest extends TestCase
             []
         );
 
-        $propertyRetriever = new PropertyRetriever($propertyInfo);
+        $propertyRetriever = new PropertyInfoExtractor($propertyInfo);
 
         $finder = new ClassFinder($propertyRetriever, $skip ?? []);
 

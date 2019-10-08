@@ -8,15 +8,15 @@ use DateTimeInterface;
 use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\UtcDateTime;
 use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\ClassFinderInterface;
-use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ClassFinder implements ClassFinderInterface
 {
     /**
-     * @var \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface
+     * @var \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface
      */
-    private $propertyRetriever;
+    private $propertyInfo;
 
     /**
      * @var string[]
@@ -26,14 +26,14 @@ final class ClassFinder implements ClassFinderInterface
     /**
      * Constructor.
      *
-     * @param \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface $propertyRetriever
+     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface $propertyInfo
      * @param string[] $skipClasses
      */
     public function __construct(
-        PropertyRetrieverInterface $propertyRetriever,
+        PropertyInfoExtractorInterface $propertyInfo,
         array $skipClasses
     ) {
-        $this->propertyRetriever = $propertyRetriever;
+        $this->propertyInfo = $propertyInfo;
         $this->skipClasses = $skipClasses;
     }
 
@@ -77,10 +77,10 @@ final class ClassFinder implements ClassFinderInterface
 
         $found[] = $class;
 
-        $properties = $this->propertyRetriever->getProperties($class);
+        $properties = $this->propertyInfo->getProperties($class) ?? [];
 
         foreach ($properties as $property) {
-            $types = $this->propertyRetriever->getTypes($class, $property);
+            $types = $this->propertyInfo->getTypes($class, $property);
 
             // No types available.
             if ($types === null) {

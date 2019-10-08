@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator;
 
-use LoyaltyCorp\ApiDocumenter\Generator\PropertyRetriever;
+use LoyaltyCorp\ApiDocumenter\Generator\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor as BasePropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\PublicProperties;
 
 /**
- * @covers \LoyaltyCorp\ApiDocumenter\Generator\PropertyRetriever
+ * @covers \LoyaltyCorp\ApiDocumenter\Generator\PropertyInfoExtractor
  */
-final class PropertyRetrieverTest extends TestCase
+final class PropertyInfoExrtractorTest extends TestCase
 {
     /**
      * Tests that the property retriever retrieves properties.
@@ -26,6 +26,7 @@ final class PropertyRetrieverTest extends TestCase
         $retriever = $this->getRetriever();
 
         $expected = [
+            'dualType',
             'empty',
             'resource',
             'string',
@@ -64,11 +65,29 @@ final class PropertyRetrieverTest extends TestCase
     }
 
     /**
+     * Tests the passthrough methods.
+     *
+     * @return void
+     */
+    public function testMiscMethods(): void
+    {
+        $retriever = $this->getRetriever();
+
+        self::assertFalse($retriever->isWritable(PublicProperties::class, 'string'));
+        self::assertFalse($retriever->isReadable(PublicProperties::class, 'string'));
+        self::assertSame(
+            'A property that should not appear anywhere because it is prefixed with an underscore.',
+            $retriever->getShortDescription(PublicProperties::class, '_skipThis')
+        );
+        self::assertSame('Longer Description.', $retriever->getLongDescription(PublicProperties::class, '_skipThis'));
+    }
+
+    /**
      * Returns the retriever under test.
      *
-     * @return \LoyaltyCorp\ApiDocumenter\Generator\PropertyRetriever
+     * @return \LoyaltyCorp\ApiDocumenter\Generator\PropertyInfoExtractor
      */
-    private function getRetriever(): PropertyRetriever
+    private function getRetriever(): PropertyInfoExtractor
     {
         $phpDocExtractor = new PhpDocExtractor();
         $reflectionExtractor = new ReflectionExtractor(
@@ -80,7 +99,7 @@ final class PropertyRetrieverTest extends TestCase
             ReflectionExtractor::ALLOW_PROTECTED |
             ReflectionExtractor::ALLOW_PUBLIC
         );
-        $propertyInfo = new PropertyInfoExtractor(
+        $propertyInfo = new BasePropertyInfoExtractor(
             [$reflectionExtractor],
             [$phpDocExtractor, $reflectionExtractor],
             [$phpDocExtractor],
@@ -88,6 +107,6 @@ final class PropertyRetrieverTest extends TestCase
             []
         );
 
-        return new PropertyRetriever($propertyInfo);
+        return new PropertyInfoExtractor($propertyInfo);
     }
 }
