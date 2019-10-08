@@ -35,7 +35,7 @@ final class PropertyTypeToSchemaConverter implements PropertyTypeToSchemaConvert
         // If the type is a collection and has a value type, resolve
         // the collection type as an array.
         if ($type->isCollection() && $type->getCollectionValueType() instanceof Type === true) {
-            return $this->handleCollectionType($type);
+            return $this->handleCollectionType($type->getCollectionValueType());
         }
 
         // Try to resolve a primitive type
@@ -63,7 +63,7 @@ final class PropertyTypeToSchemaConverter implements PropertyTypeToSchemaConvert
      */
     private function handleCollectionType(Type $type): ?Schema
     {
-        $collectionSchema = $this->convert($type->getCollectionValueType());
+        $collectionSchema = $this->convert($type);
 
         // If we didnt get a collection value schema we cant infer the schema for
         // this property at all.

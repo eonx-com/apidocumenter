@@ -18,9 +18,11 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
     /**
      * Returns test data.
      *
-     * @return mixed
+     * @return mixed[]
      *
      * @throws \cebe\openapi\exceptions\TypeErrorException
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function getConversionData(): iterable
     {
@@ -31,15 +33,15 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
                 PublicProperties::class
             ),
             'schema' => new Schema([
-                '$ref' => '#/components/schemas/TestsLoyaltyCorpApiDocumenterUnitGeneratorFixturesPublicProperties' // phpcs:ignore
-            ])
+                '$ref' => '#/components/schemas/TestsLoyaltyCorpApiDocumenterUnitGeneratorFixturesPublicProperties', // phpcs:ignore
+            ]),
         ];
 
         yield 'object type with no class' => [
             'type' => new Type(
                 Type::BUILTIN_TYPE_OBJECT
             ),
-            'schema' => null
+            'schema' => null,
         ];
 
         yield 'non existant object type' => [
@@ -48,7 +50,7 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
                 false,
                 'doesntexist'
             ),
-            'schema' => null
+            'schema' => null,
         ];
 
         yield 'scalar string' => [
@@ -56,8 +58,8 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
                 Type::BUILTIN_TYPE_STRING
             ),
             'schema' => new Schema([
-                'type' => 'string'
-            ])
+                'type' => 'string',
+            ]),
         ];
 
         yield 'scalar integer' => [
@@ -66,8 +68,8 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
             ),
             'schema' => new Schema([
                 'type' => 'integer',
-                'format' => 'int64'
-            ])
+                'format' => 'int64',
+            ]),
         ];
 
         yield 'collection integer' => [
@@ -84,10 +86,10 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
             'schema' => new Schema([
                 'items' => new Schema([
                     'type' => 'integer',
-                    'format' => 'int64'
+                    'format' => 'int64',
                 ]),
-                'type' => 'array'
-            ])
+                'type' => 'array',
+            ]),
         ];
 
         yield 'collection object' => [
@@ -105,10 +107,10 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
             ),
             'schema' => new Schema([
                 'items' => new Schema([
-                    '$ref' => '#/components/schemas/TestsLoyaltyCorpApiDocumenterUnitGeneratorFixturesPublicProperties' // phpcs:ignore
+                    '$ref' => '#/components/schemas/TestsLoyaltyCorpApiDocumenterUnitGeneratorFixturesPublicProperties', // phpcs:ignore
                 ]),
-                'type' => 'array'
-            ])
+                'type' => 'array',
+            ]),
         ];
 
         yield 'collection unknown object' => [
@@ -124,15 +126,15 @@ final class PropertyTypeToSchemaConverterTest extends TestCase
                     'doesntexist'
                 )
             ),
-            'schema' => null
+            'schema' => null,
         ];
     }
 
     /**
      * Tests the converter.
      *
-     * @param Type $type
-     * @param Schema $expected
+     * @param \Symfony\Component\PropertyInfo\Type $type
+     * @param \cebe\openapi\spec\Schema $expected
      *
      * @return void
      *

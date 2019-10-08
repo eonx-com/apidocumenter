@@ -18,6 +18,8 @@ use Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\ValueObject;
 
 /**
  * @covers \LoyaltyCorp\ApiDocumenter\Generator\ClassFinder
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Required to test
  */
 final class ClassFinderTest extends TestCase
 {

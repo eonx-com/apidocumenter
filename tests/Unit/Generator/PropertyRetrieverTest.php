@@ -30,12 +30,12 @@ final class PropertyRetrieverTest extends TestCase
             'resource',
             'string',
             'typeless',
-            'values'
+            'values',
         ];
 
         $actual = $retriever->getProperties(PublicProperties::class);
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -55,18 +55,18 @@ final class PropertyRetrieverTest extends TestCase
                 false,
                 null,
                 null
-            )
+            ),
         ];
 
         $actual = $retriever->getTypes(PublicProperties::class, 'string');
 
-        static::assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**
      * Returns the retriever under test.
      *
-     * @return PropertyRetriever
+     * @return \LoyaltyCorp\ApiDocumenter\Generator\PropertyRetriever
      */
     private function getRetriever(): PropertyRetriever
     {

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\ApiDocumenter\Generator\Interfaces;
 
-use Symfony\Component\PropertyInfo\Type;
-
 interface PropertyRetrieverInterface
 {
     /**
@@ -22,7 +20,7 @@ interface PropertyRetrieverInterface
      * @param string $class
      * @param string $property
      *
-     * @return Type[]
+     * @return \Symfony\Component\PropertyInfo\Type[]
      */
     public function getTypes(string $class, string $property): ?array;
 }

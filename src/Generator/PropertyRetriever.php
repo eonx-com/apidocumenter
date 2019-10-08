@@ -4,22 +4,21 @@ declare(strict_types=1);
 namespace LoyaltyCorp\ApiDocumenter\Generator;
 
 use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 
 final class PropertyRetriever implements PropertyRetrieverInterface
 {
     /**
-     * @var \Symfony\Component\PropertyInfo\PropertyListExtractorInterface
+     * @var \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface
      */
     private $propertyInfo;
 
     /**
      * Constructor.
      *
-     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractor $propertyInfo
+     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface $propertyInfo
      */
-    public function __construct(PropertyInfoExtractor $propertyInfo)
+    public function __construct(PropertyInfoExtractorInterface $propertyInfo)
     {
         $this->propertyInfo = $propertyInfo;
     }

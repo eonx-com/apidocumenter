@@ -5,6 +5,8 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures;
 
 /**
  * @coversNothing
+ *
+ * @SuppressWarnings(PHPMD) Class is hanky, and triggers phpmd errors in order to test functionality
  */
 final class PublicProperties
 {
@@ -13,7 +15,7 @@ final class PublicProperties
      *
      * @var null
      */
-    public $_skipThis;
+    public $_skipThis; // phpcs:ignore
 
     /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass
@@ -30,12 +32,12 @@ final class PublicProperties
     /**
      * @var string
      */
-    public $string; // phpcs:ignore
+    public $string;
 
-    public $typeless;
+    public $typeless; // phpcs:ignore
 
-        /**
+    /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\ValueObject[]
      */
-    public $values = []; // phpcs:ignore
+    public $values = [];
 }

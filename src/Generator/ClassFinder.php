@@ -14,7 +14,7 @@ use Symfony\Component\PropertyInfo\Type;
 final class ClassFinder implements ClassFinderInterface
 {
     /**
-     * @var PropertyRetrieverInterface
+     * @var \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface
      */
     private $propertyRetriever;
 
@@ -26,7 +26,7 @@ final class ClassFinder implements ClassFinderInterface
     /**
      * Constructor.
      *
-     * @param PropertyRetrieverInterface $propertyRetriever
+     * @param \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface $propertyRetriever
      * @param string[] $skipClasses
      */
     public function __construct(
