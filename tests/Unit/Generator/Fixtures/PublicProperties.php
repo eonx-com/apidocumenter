@@ -5,9 +5,18 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures;
 
 /**
  * @coversNothing
+ *
+ * @SuppressWarnings(PHPMD) Class is hanky, and triggers phpmd errors in order to test functionality
  */
 final class PublicProperties
 {
+    /**
+     * A property that should not appear anywhere because it is prefixed with an underscore.
+     *
+     * @var null
+     */
+    public $_skipThis; // phpcs:ignore
+
     /**
      * @var \Tests\LoyaltyCorp\ApiDocumenter\Unit\Generator\Fixtures\EmptyClass
      */

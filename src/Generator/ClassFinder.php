@@ -8,15 +8,15 @@ use DateTimeInterface;
 use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\UtcDateTime;
 use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\ClassFinderInterface;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
+use LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ClassFinder implements ClassFinderInterface
 {
     /**
-     * @var \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface
+     * @var \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface
      */
-    private $propertyInfo;
+    private $propertyRetriever;
 
     /**
      * @var string[]
@@ -26,14 +26,14 @@ final class ClassFinder implements ClassFinderInterface
     /**
      * Constructor.
      *
-     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface $propertyInfo
+     * @param \LoyaltyCorp\ApiDocumenter\Generator\Interfaces\PropertyRetrieverInterface $propertyRetriever
      * @param string[] $skipClasses
      */
     public function __construct(
-        PropertyInfoExtractorInterface $propertyInfo,
+        PropertyRetrieverInterface $propertyRetriever,
         array $skipClasses
     ) {
-        $this->propertyInfo = $propertyInfo;
+        $this->propertyRetriever = $propertyRetriever;
         $this->skipClasses = $skipClasses;
     }
 
@@ -77,10 +77,10 @@ final class ClassFinder implements ClassFinderInterface
 
         $found[] = $class;
 
-        $properties = $this->getProperties($class);
+        $properties = $this->propertyRetriever->getProperties($class);
 
         foreach ($properties as $property) {
-            $types = $this->propertyInfo->getTypes($class, $property);
+            $types = $this->propertyRetriever->getTypes($class, $property);
 
             // No types available.
             if ($types === null) {
@@ -130,29 +130,6 @@ final class ClassFinder implements ClassFinderInterface
         }
 
         return $class;
-    }
-
-    /**
-     * Returns properties for the supplied class.
-     *
-     * @param string $class
-     *
-     * @return string[]
-     */
-    private function getProperties(string $class): array
-    {
-        $properties = $this->propertyInfo->getProperties($class) ?? [];
-
-        $properties = \array_filter($properties, static function (string $name): bool {
-            // Remove anything that starts with an underscore from being used in the Schema.
-            return $name[0] !== '_' &&
-                // Remove the statusCode property as a temporary measure to avoid
-                // the getStatusCode on responses from being added to every
-                // typed response.
-                $name !== 'statusCode';
-        });
-
-        return $properties;
     }
 
     /**
