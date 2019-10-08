@@ -7,7 +7,10 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ObjectManagerStub implements ObjectManager
+/**
+ * @SuppressWarnings(PHPMD) Stub is for an external vendor
+ */
+final class ObjectManagerStub implements ObjectManager
 {
     /**
      * @var \Doctrine\Common\Persistence\Mapping\ClassMetadataFactory
@@ -15,7 +18,7 @@ class ObjectManagerStub implements ObjectManager
     private $factory;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Doctrine\Common\Persistence\Mapping\ClassMetadataFactory $factory
      */

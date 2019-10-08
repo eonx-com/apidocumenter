@@ -5,7 +5,7 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 
-class ClassMetadataFactoryStub implements ClassMetadataFactory
+final class ClassMetadataFactoryStub implements ClassMetadataFactory
 {
     /**
      * @var bool[]
@@ -13,7 +13,7 @@ class ClassMetadataFactoryStub implements ClassMetadataFactory
     private $transient;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param bool[]|null $transient
      */
@@ -27,7 +27,6 @@ class ClassMetadataFactoryStub implements ClassMetadataFactory
      */
     public function getAllMetadata()
     {
-
     }
 
     /**
@@ -35,7 +34,6 @@ class ClassMetadataFactoryStub implements ClassMetadataFactory
      */
     public function getMetadataFor($className)
     {
-
     }
 
     /**
@@ -43,15 +41,6 @@ class ClassMetadataFactoryStub implements ClassMetadataFactory
      */
     public function hasMetadataFor($className)
     {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMetadataFor($className, $class): void
-    {
-
     }
 
     /**
@@ -60,5 +49,12 @@ class ClassMetadataFactoryStub implements ClassMetadataFactory
     public function isTransient($className)
     {
         return $this->transient[$className] ?? true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMetadataFor($className, $class): void
+    {
     }
 }
