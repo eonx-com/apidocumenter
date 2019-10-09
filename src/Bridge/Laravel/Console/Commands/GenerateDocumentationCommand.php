@@ -40,24 +40,44 @@ final class GenerateDocumentationCommand extends Command
      */
     public function handle(): void
     {
-        $name = $this->argument('name');
+        $name = $this->getArgument('name');
         if (\is_string($name) === false) {
             // @codeCoverageIgnoreStart
             // Laravel's awesome command function typehints..
-            throw new RuntimeException('The required option "name" must be a string');
+            throw new RuntimeException('The required option "name" was not provided or is not a string.');
             // @codeCoverageIgnoreEnd
         }
 
-        $version = $this->argument('version');
+        $version = $this->getArgument('version');
         if (\is_string($version) === false) {
             // @codeCoverageIgnoreStart
             // Laravel's awesome command function typehints..
-            throw new RuntimeException('The required option "version" must be a string');
+            throw new RuntimeException('The required option "version" was not provided or is not a string.');
             // @codeCoverageIgnoreEnd
         }
 
         $output = $this->generator->generate($name, $version);
 
         $this->output->write($output);
+    }
+
+    /**
+     * Get option as a string or null.
+     *
+     * @param string $key The option to get
+     *
+     * @return string|null
+     */
+    private function getArgument(string $key): ?string
+    {
+        $option = $this->argument($key) ?: null;
+        // If option is an array reset
+        while (\is_array($option)) {
+            // Code coverage is suppressed because it shouldn't be possible to pass an array
+            // but Laravel typehints it is possible therefore needs to be handled
+            $option = \reset($option); // @codeCoverageIgnore
+        }
+
+        return \is_scalar($option) === true ? (string)$option : null;
     }
 }
