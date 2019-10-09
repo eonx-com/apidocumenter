@@ -46,7 +46,7 @@ final class GeneratorTest extends TestCase
         ]);
         $routeEnhancer = new RouteEnhancerStub();
         $routeExtractor = new RouteExtractorStub([
-            $route
+            $route,
         ]);
         $schemaConverter = new RoutesToSchemasConverterStub([
             'schemaEntry' => new Schema([

@@ -27,7 +27,7 @@ final class Generator implements GeneratorInterface
     private $pathItemConverter;
 
     /**
-     * @var RouteEnhancerInterface
+     * @var \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteEnhancerInterface
      */
     private $routeEnhancer;
 
@@ -45,7 +45,7 @@ final class Generator implements GeneratorInterface
      * Constructor.
      *
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface $pathItemConverter
-     * @param RouteEnhancerInterface $routeEnhancer
+     * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteEnhancerInterface $routeEnhancer
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface $routeExtractor
      * @param \LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterInterface $schemaConverter
      */

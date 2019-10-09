@@ -6,10 +6,13 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\Routing;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteEnhancerInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Route;
 
-class RouteEnhancerStub implements RouteEnhancerInterface
+/**
+ * @coversNothing
+ */
+final class RouteEnhancerStub implements RouteEnhancerInterface
 {
     /**
-     * @var Route[]
+     * @var \LoyaltyCorp\ApiDocumenter\Routing\Route[]
      */
     private $enhanced = [];
 
@@ -24,7 +27,7 @@ class RouteEnhancerStub implements RouteEnhancerInterface
     /**
      * Returns enhanced routes.
      *
-     * @return Route[]
+     * @return \LoyaltyCorp\ApiDocumenter\Routing\Route[]
      */
     public function getEnhanced(): array
     {
