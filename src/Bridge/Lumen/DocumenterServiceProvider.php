@@ -39,6 +39,8 @@ final class DocumenterServiceProvider extends ServiceProvider
      * @noinspection PhpMissingParentCallCommonInspection Parent implementation is empty
      *
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess) The DocBlockFactory has a static factory
      */
     public function register(): void
     {
@@ -72,7 +74,6 @@ final class DocumenterServiceProvider extends ServiceProvider
                 []
             );
         });
-        /** @SuppressWarnings(PHPMD.StaticAccess) The DocBlockFactory has a static factory */
         $this->app->instance(DocBlockFactory::class, DocBlockFactory::createInstance());
         $this->app->bind(GeneratorInterface::class, Generator::class);
         $this->app->bind(OpenApiTypeResolverInterface::class, OpenApiTypeResolver::class);
