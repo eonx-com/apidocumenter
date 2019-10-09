@@ -37,7 +37,9 @@ final class RoutesToSchemasConverterTest extends TestCase
         $route->setRequestType(Request::class);
 
         $this->expectException(NoSchemaBuilderFoundException::class);
-        $this->expectExceptionMessage('No schema builder was found for "Tests\LoyaltyCorp\ApiDocumenter\Fixtures\Request"');
+        $this->expectExceptionMessage(
+            'No schema builder was found for "Tests\LoyaltyCorp\ApiDocumenter\Fixtures\Request"'
+        );
 
         $converter->convert([$route]);
     }
@@ -67,8 +69,8 @@ final class RoutesToSchemasConverterTest extends TestCase
         ], new ClassFinderStub());
 
         $expected = [
-            '#/components/schemas/TestsLoyaltyCorpApiDocumenterFixturesRequest' => $requestSchema,
-            '#/components/schemas/TestsLoyaltyCorpApiDocumenterFixturesResponse' => $responseSchema,
+            'TestsLoyaltyCorpApiDocumenterFixturesRequest' => $requestSchema,
+            'TestsLoyaltyCorpApiDocumenterFixturesResponse' => $responseSchema,
         ];
 
         $route = new Route(

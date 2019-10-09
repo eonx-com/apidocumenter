@@ -40,7 +40,7 @@ final class Generator implements GeneratorInterface
      *
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface $pathItemConverter
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface $routeExtractor
-     * @param Interfaces\RoutesToSchemasConverterInterface $schemaConverter
+     * @param \LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterInterface $schemaConverter
      */
     public function __construct(
         RouteToPathItemConverterInterface $pathItemConverter,
@@ -81,12 +81,15 @@ final class Generator implements GeneratorInterface
                 $root->getSerializableData(),
                 \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT
             );
+            // @codeCoverageIgnoreStart
+            // Unable to force $root->getSerializableData() to return invalid objects
         } /** @noinspection PhpRedundantCatchClauseInspection */ catch (JsonException $exception) {
             throw new GenerationFailedException(
                 'Documentation Generation failed.',
                 0,
                 $exception
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 }

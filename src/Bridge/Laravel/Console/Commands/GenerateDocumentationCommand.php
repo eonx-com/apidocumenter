@@ -5,18 +5,19 @@ namespace LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands;
 
 use Illuminate\Console\Command;
 use LoyaltyCorp\ApiDocumenter\Documentation\Generator;
+use RuntimeException;
 
 final class GenerateDocumentationCommand extends Command
 {
     /**
-     * @var Generator
+     * @var \LoyaltyCorp\ApiDocumenter\Documentation\Generator
      */
     private $generator;
 
     /**
      * Constructor.
      *
-     * @param Generator $generator
+     * @param \LoyaltyCorp\ApiDocumenter\Documentation\Generator $generator
      */
     public function __construct(Generator $generator)
     {
@@ -31,16 +32,25 @@ final class GenerateDocumentationCommand extends Command
     }
 
     /**
+     * Handles.
+     *
      * @return void
      *
      * @throws \cebe\openapi\exceptions\TypeErrorException
      */
     public function handle(): void
     {
-        $output = $this->generator->generate(
-            $this->argument('name'),
-            $this->argument('version')
-        );
+        $name = $this->argument('name');
+        if (\is_string($name) === false) {
+            throw new RuntimeException('name must be a string');
+        }
+
+        $version = $this->argument('version');
+        if (\is_string($version) === false) {
+            throw new RuntimeException('version must be a string');
+        }
+
+        $output = $this->generator->generate($name, $version);
 
         $this->output->write($output);
     }
