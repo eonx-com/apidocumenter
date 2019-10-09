@@ -44,7 +44,7 @@ final class GenerateDocumentationCommand extends Command
         if (\is_string($name) === false) {
             // @codeCoverageIgnoreStart
             // Laravel's awesome command function typehints..
-            throw new RuntimeException('name must be a string');
+            throw new RuntimeException('The required option "name" must be a string');
             // @codeCoverageIgnoreEnd
         }
 
@@ -52,7 +52,7 @@ final class GenerateDocumentationCommand extends Command
         if (\is_string($version) === false) {
             // @codeCoverageIgnoreStart
             // Laravel's awesome command function typehints..
-            throw new RuntimeException('version must be a string');
+            throw new RuntimeException('The required option "version" must be a string');
             // @codeCoverageIgnoreEnd
         }
 

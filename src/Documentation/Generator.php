@@ -85,7 +85,7 @@ final class Generator implements GeneratorInterface
             // Unable to force $root->getSerializableData() to return invalid objects
         } /** @noinspection PhpRedundantCatchClauseInspection */ catch (JsonException $exception) {
             throw new GenerationFailedException(
-                'Documentation Generation failed.',
+                'An exception occurred converting the schema to JSON.',
                 0,
                 $exception
             );

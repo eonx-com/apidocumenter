@@ -32,7 +32,6 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Required to configure
- * @SuppressWarnings(PHPMD.StaticAccess) required to create
  */
 final class DocumenterServiceProvider extends ServiceProvider
 {
@@ -73,6 +72,7 @@ final class DocumenterServiceProvider extends ServiceProvider
                 []
             );
         });
+        /** @SuppressWarnings(PHPMD.StaticAccess) The DocBlockFactory has a static factory */
         $this->app->instance(DocBlockFactory::class, DocBlockFactory::createInstance());
         $this->app->bind(GeneratorInterface::class, Generator::class);
         $this->app->bind(OpenApiTypeResolverInterface::class, OpenApiTypeResolver::class);
