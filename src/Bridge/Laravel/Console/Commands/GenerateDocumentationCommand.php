@@ -4,22 +4,22 @@ declare(strict_types=1);
 namespace LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands;
 
 use Illuminate\Console\Command;
-use LoyaltyCorp\ApiDocumenter\Documentation\Generator;
+use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\GeneratorInterface;
 use RuntimeException;
 
 final class GenerateDocumentationCommand extends Command
 {
     /**
-     * @var \LoyaltyCorp\ApiDocumenter\Documentation\Generator
+     * @var \LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\GeneratorInterface
      */
     private $generator;
 
     /**
      * Constructor.
      *
-     * @param \LoyaltyCorp\ApiDocumenter\Documentation\Generator $generator
+     * @param \LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\GeneratorInterface $generator
      */
-    public function __construct(Generator $generator)
+    public function __construct(GeneratorInterface $generator)
     {
         parent::__construct();
 
@@ -42,12 +42,18 @@ final class GenerateDocumentationCommand extends Command
     {
         $name = $this->argument('name');
         if (\is_string($name) === false) {
+            // @codeCoverageIgnoreStart
+            // Laravel's awesome command function typehints..
             throw new RuntimeException('name must be a string');
+            // @codeCoverageIgnoreEnd
         }
 
         $version = $this->argument('version');
         if (\is_string($version) === false) {
+            // @codeCoverageIgnoreStart
+            // Laravel's awesome command function typehints..
             throw new RuntimeException('version must be a string');
+            // @codeCoverageIgnoreEnd
         }
 
         $output = $this->generator->generate($name, $version);

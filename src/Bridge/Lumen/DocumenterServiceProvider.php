@@ -17,7 +17,6 @@ use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\ReflectionRouteEnhancer;
 use LoyaltyCorp\ApiDocumenter\Routing\RouteToPathItemConverter;
-use LoyaltyCorp\ApiDocumenter\SchemaBuilders\CustomEntityRequestSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\EntityRequestSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\OpenApiTypeResolverInterface;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\PropertyTypeToSchemaConverterInterface;
@@ -33,6 +32,7 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Required to configure
+ * @SuppressWarnings(PHPMD.StaticAccess) required to create
  */
 final class DocumenterServiceProvider extends ServiceProvider
 {
@@ -115,7 +115,7 @@ final class DocumenterServiceProvider extends ServiceProvider
 
         $this->app->tag([
             EntityRequestSchemaBuilder::class,
-            ObjectSchemaBuilder::class
+            ObjectSchemaBuilder::class,
         ], ['apidocumenter_schema_builder']);
     }
 }

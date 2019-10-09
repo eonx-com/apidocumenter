@@ -19,25 +19,23 @@ use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\ReflectionRouteEnhancer;
 use LoyaltyCorp\ApiDocumenter\Routing\RouteToPathItemConverter;
-use LoyaltyCorp\ApiDocumenter\SchemaBuilders\CustomEntityRequestSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\EntityRequestSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\OpenApiTypeResolverInterface;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\PropertyTypeToSchemaConverterInterface;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\ObjectSchemaBuilder;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\OpenApiTypeResolver;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\PropertyTypeToSchemaConverter;
-use phpDocumentor\Reflection\DocBlock\StandardTagFactory;
-use phpDocumentor\Reflection\DocBlock\TagFactory;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
+use stdClass;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
-use Tests\EoneoPay\Utils\Stubs\Vendor\Laravel\ContainerStub;
 use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Doctrine\ORM\ManagerRegistryStub;
 use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Vendor\Illuminate\Foundation\ApplicationStub;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 
 /**
  * @covers \LoyaltyCorp\ApiDocumenter\Bridge\Lumen\DocumenterServiceProvider
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Required to test
  */
 final class DocumentationServiceProviderTest extends TestCase
 {
@@ -58,6 +56,10 @@ final class DocumentationServiceProviderTest extends TestCase
             new CamelCaseToSnakeCaseNameConverter()
         );
 
+        $app->instance(stdClass::class, new stdClass());
+        // Tag a bad instance
+        $app->tag([stdClass::class], 'apidocumenter_schema_builder');
+
         (new DocumenterServiceProvider($app))
             ->register();
 
@@ -72,7 +74,7 @@ final class DocumentationServiceProviderTest extends TestCase
             RouteToPathItemConverterInterface::class => RouteToPathItemConverter::class,
             RoutesToSchemasConverterInterface::class => RoutesToSchemasConverter::class,
             EntityRequestSchemaBuilder::class => EntityRequestSchemaBuilder::class,
-            ObjectSchemaBuilder::class => ObjectSchemaBuilder::class
+            ObjectSchemaBuilder::class => ObjectSchemaBuilder::class,
         ];
 
         foreach ($bindings as $binding => $class) {

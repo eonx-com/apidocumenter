@@ -10,3 +10,9 @@ parameters:
         -
             message: '#Property Tests\\LoyaltyCorp\\ApiDocumenter\\Unit\\SchemaBuilders\\Fixtures\\PublicProperties::\$typeless has no typehint specified\.#'
             path: tests/Unit/SchemaBuilders/Fixtures/PublicProperties.php
+        -
+            message: '~Parameter \#1 \$app of class Laravel\\Lumen\\Routing\\Router constructor expects Laravel\\Lumen\\Application, Tests\\LoyaltyCorp\\ApiDocumenter\\Stubs\\Vendor\\Illuminate\\Foundation\\ApplicationStub given\.~'
+            path: 'tests/Unit/Bridge/Lumen/DocumentationServiceProviderTest.php'
+        -
+            message: '~Parameter \#2 \$tags of method Tests\\LoyaltyCorp\\ApiDocumenter\\Stubs\\Vendor\\Illuminate\\Foundation\\ApplicationStub::tag\(\) expects array<int, mixed>, string given\.~'
+            path: 'tests/Unit/Bridge/Lumen/DocumentationServiceProviderTest.php'

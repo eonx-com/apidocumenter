@@ -7,6 +7,7 @@ use ArrayAccess;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
+use RuntimeException;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) This class is implemented from a Laravel interface
@@ -14,17 +15,17 @@ use Illuminate\Contracts\Foundation\Application;
  * @SuppressWarnings(PHPMD.TooManyMethods) This class is implemented from a Laravel interface
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) This class is implemented from a Laravel interface
  */
-class ApplicationStub implements Application, ArrayAccess
+final class ApplicationStub implements Application, ArrayAccess
 {
     /**
-     * Container bindings
+     * Container bindings.
      *
      * @var \Illuminate\Container\Container
      */
     private $container;
 
     /**
-     * Create container
+     * Create container.
      */
     public function __construct()
     {
@@ -479,6 +480,7 @@ class ApplicationStub implements Application, ArrayAccess
      */
     public function tag($abstracts, $tags): void
     {
+        $this->container->tag($abstracts, $tags);
     }
 
     /**
@@ -486,6 +488,7 @@ class ApplicationStub implements Application, ArrayAccess
      */
     public function tagged($tag)
     {
+        return $this->container->tagged($tag);
     }
 
     /**
@@ -510,7 +513,7 @@ class ApplicationStub implements Application, ArrayAccess
     }
 
     /**
-     * Call a container method
+     * Call a container method.
      *
      * @param string $method The method to call
      * @param mixed[]|null $parameters Parameters to pass to the method
@@ -519,6 +522,12 @@ class ApplicationStub implements Application, ArrayAccess
      */
     private function callMethod(string $method, ?array $parameters = null)
     {
-        return \call_user_func_array([$this->container, $method], $parameters ?? []);
+        $function = [$this->container, $method];
+
+        if (\is_callable($function) === false) {
+            throw new RuntimeException('Unable to call callable');
+        }
+
+        return \call_user_func_array($function, $parameters ?? []);
     }
 }
