@@ -20,9 +20,9 @@ interface SchemaBuilderInterface
      * Indicates that this schema builder supports building a schema
      * for the specific class.
      *
-     * @param string $lcass
+     * @param string $class
      *
      * @return bool
      */
-    public function supports(string $lcass): bool;
+    public function supports(string $class): bool;
 }
