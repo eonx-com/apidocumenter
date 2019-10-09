@@ -8,6 +8,7 @@ use JsonException;
 use LoyaltyCorp\ApiDocumenter\Documentation\Exceptions\GenerationFailedException;
 use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\GeneratorInterface;
 use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterInterface;
+use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteEnhancerInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface;
 
@@ -26,6 +27,11 @@ final class Generator implements GeneratorInterface
     private $pathItemConverter;
 
     /**
+     * @var RouteEnhancerInterface
+     */
+    private $routeEnhancer;
+
+    /**
      * @var \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface
      */
     private $routeExtractor;
@@ -39,15 +45,18 @@ final class Generator implements GeneratorInterface
      * Constructor.
      *
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface $pathItemConverter
+     * @param RouteEnhancerInterface $routeEnhancer
      * @param \LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface $routeExtractor
      * @param \LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterInterface $schemaConverter
      */
     public function __construct(
         RouteToPathItemConverterInterface $pathItemConverter,
+        RouteEnhancerInterface $routeEnhancer,
         RouteExtractorInterface $routeExtractor,
         RoutesToSchemasConverterInterface $schemaConverter
     ) {
         $this->pathItemConverter = $pathItemConverter;
+        $this->routeEnhancer = $routeEnhancer;
         $this->routeExtractor = $routeExtractor;
         $this->schemaConverter = $schemaConverter;
     }
@@ -60,6 +69,9 @@ final class Generator implements GeneratorInterface
     public function generate(string $name, string $version): string
     {
         $routes = $this->routeExtractor->getRoutes();
+        foreach ($routes as $route) {
+            $this->routeEnhancer->enhanceRoute($route);
+        }
 
         $schemas = $this->schemaConverter->convert($routes);
         $paths = $this->pathItemConverter->convert($routes);

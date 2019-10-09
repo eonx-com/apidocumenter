@@ -21,14 +21,14 @@ final class GenerateDocumentationCommand extends Command
      */
     public function __construct(GeneratorInterface $generator)
     {
-        parent::__construct();
-
         $this->description = 'Generates application documentation.';
         $this->signature = 'loyaltycorp:documentation:generate 
             {name : The applications name}
             {version : The version of the documentation}';
 
         $this->generator = $generator;
+
+        parent::__construct();
     }
 
     /**

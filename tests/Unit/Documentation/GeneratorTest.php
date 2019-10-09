@@ -7,7 +7,9 @@ use cebe\openapi\spec\Parameter;
 use cebe\openapi\spec\PathItem;
 use cebe\openapi\spec\Schema;
 use LoyaltyCorp\ApiDocumenter\Documentation\Generator;
+use LoyaltyCorp\ApiDocumenter\Routing\Route;
 use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Documentation\RoutesToSchemasConverterStub;
+use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Routing\RouteEnhancerStub;
 use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Routing\RouteExtractorStub;
 use Tests\LoyaltyCorp\ApiDocumenter\Stubs\Routing\RouteToPathItemConverterStub;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
@@ -26,6 +28,8 @@ final class GeneratorTest extends TestCase
      */
     public function testGenerate(): void
     {
+        $route = new Route('', '', '', '');
+
         $pathItemConverter = new RouteToPathItemConverterStub([
             '/path/{param}' => new PathItem([
                 'parameters' => [
@@ -40,7 +44,10 @@ final class GeneratorTest extends TestCase
                 ],
             ]),
         ]);
-        $routeExtractor = new RouteExtractorStub([]);
+        $routeEnhancer = new RouteEnhancerStub();
+        $routeExtractor = new RouteExtractorStub([
+            $route
+        ]);
         $schemaConverter = new RoutesToSchemasConverterStub([
             'schemaEntry' => new Schema([
                 'type' => 'string',
@@ -49,6 +56,7 @@ final class GeneratorTest extends TestCase
 
         $generator = new Generator(
             $pathItemConverter,
+            $routeEnhancer,
             $routeExtractor,
             $schemaConverter
         );
@@ -87,5 +95,6 @@ JSON;
         $output = $generator->generate('Application Name', '1.2.3');
 
         self::assertSame($expected, $output);
+        self::assertSame([$route], $routeEnhancer->getEnhanced());
     }
 }
