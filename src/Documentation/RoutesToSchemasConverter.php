@@ -6,8 +6,9 @@ namespace LoyaltyCorp\ApiDocumenter\Documentation;
 use LoyaltyCorp\ApiDocumenter\ClassUtils\Interfaces\ClassFinderInterface;
 use LoyaltyCorp\ApiDocumenter\Documentation\Exceptions\NoSchemaBuilderFoundException;
 use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterInterface;
+use function LoyaltyCorp\ApiDocumenter\SchemaBuilders\buildReference;
 
-class RoutesToSchemasConverter implements RoutesToSchemasConverterInterface
+final class RoutesToSchemasConverter implements RoutesToSchemasConverterInterface
 {
     /**
      * @var \LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\SchemaBuilderInterface[]
@@ -20,7 +21,7 @@ class RoutesToSchemasConverter implements RoutesToSchemasConverterInterface
     private $classFinder;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\SchemaBuilderInterface[] $builders
      * @param \LoyaltyCorp\ApiDocumenter\ClassUtils\Interfaces\ClassFinderInterface $classFinder
@@ -58,7 +59,8 @@ class RoutesToSchemasConverter implements RoutesToSchemasConverterInterface
                     continue;
                 }
 
-                $schemas[] = $builder->buildSchema($class);
+                $ref = buildReference($class, false);
+                $schemas[$ref] = $builder->buildSchema($class);
 
                 continue 2;
             }

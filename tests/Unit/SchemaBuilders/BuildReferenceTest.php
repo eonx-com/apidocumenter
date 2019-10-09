@@ -18,10 +18,17 @@ final class BuildReferenceTest extends TestCase
      */
     public function getData(): iterable
     {
-        yield 'simple reference' => ['ref', '#/components/schemas/ref'];
+        yield 'simple reference' => ['ref', true, '#/components/schemas/ref'];
         yield 'class reference' => [
             Request::class,
+            true,
             '#/components/schemas/TestsLoyaltyCorpApiDocumenterFixturesRequest',
+        ];
+        yield 'simple reference no prefix' => ['ref', false, 'ref'];
+        yield 'class reference no prefix' => [
+            Request::class,
+            false,
+            'TestsLoyaltyCorpApiDocumenterFixturesRequest',
         ];
     }
 
@@ -29,15 +36,19 @@ final class BuildReferenceTest extends TestCase
      * Tests that build reference correctly builds the expected reference.
      *
      * @param string $reference
+     * @param bool $addPrefix
      * @param string $expected
      *
      * @return void
      *
      * @dataProvider getData
      */
-    public function testBuildReference(string $reference, string $expected): void
+    public function testBuildReference(string $reference, bool $addPrefix, string $expected): void
     {
-        $result = \LoyaltyCorp\ApiDocumenter\SchemaBuilders\buildReference($reference);
+        $result = \LoyaltyCorp\ApiDocumenter\SchemaBuilders\buildReference(
+            $reference,
+            $addPrefix
+        );
 
         self::assertSame($expected, $result);
     }

@@ -5,7 +5,7 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\ClassFinder;
 
 use LoyaltyCorp\ApiDocumenter\ClassUtils\Interfaces\ClassFinderInterface;
 
-class ClassFinderStub implements ClassFinderInterface
+final class ClassFinderStub implements ClassFinderInterface
 {
     /**
      * {@inheritdoc}

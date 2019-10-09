@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Documentation;
 
 use cebe\openapi\spec\Schema;
-use LoyaltyCorp\ApiDocumenter\ClassUtils\ClassFinder;
 use LoyaltyCorp\ApiDocumenter\Documentation\Exceptions\NoSchemaBuilderFoundException;
 use LoyaltyCorp\ApiDocumenter\Documentation\RoutesToSchemasConverter;
 use LoyaltyCorp\ApiDocumenter\Routing\Route;
@@ -18,10 +17,10 @@ use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
 /**
  * @covers \LoyaltyCorp\ApiDocumenter\Documentation\RoutesToSchemasConverter
  */
-class RoutesToSchemasConverterTest extends TestCase
+final class RoutesToSchemasConverterTest extends TestCase
 {
     /**
-     * Tests the conversion process when no schema builder is found
+     * Tests the conversion process when no schema builder is found.
      *
      * @return void
      */
@@ -53,10 +52,10 @@ class RoutesToSchemasConverterTest extends TestCase
     public function testConvert(): void
     {
         $requestSchema = new Schema([
-            'description' => 'Request'
+            'description' => 'Request',
         ]);
         $responseSchema = new Schema([
-            'description' => 'Response'
+            'description' => 'Response',
         ]);
 
         $converter = new RoutesToSchemasConverter([
@@ -64,8 +63,13 @@ class RoutesToSchemasConverterTest extends TestCase
             new SchemaBuilderStub([
                 Request::class => $requestSchema,
                 Response::class => $responseSchema,
-            ])
+            ]),
         ], new ClassFinderStub());
+
+        $expected = [
+            '#/components/schemas/TestsLoyaltyCorpApiDocumenterFixturesRequest' => $requestSchema,
+            '#/components/schemas/TestsLoyaltyCorpApiDocumenterFixturesResponse' => $responseSchema,
+        ];
 
         $route = new Route(
             TestController::class,
@@ -78,6 +82,6 @@ class RoutesToSchemasConverterTest extends TestCase
 
         $result = $converter->convert([$route]);
 
-        self::assertEquals([$requestSchema, $responseSchema], $result);
+        self::assertEquals($expected, $result);
     }
 }

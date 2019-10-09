@@ -6,7 +6,10 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\SchemaBuilders;
 use cebe\openapi\spec\Schema;
 use LoyaltyCorp\ApiDocumenter\SchemaBuilders\Interfaces\SchemaBuilderInterface;
 
-class SchemaBuilderStub implements SchemaBuilderInterface
+/**
+ * @coversNothing
+ */
+final class SchemaBuilderStub implements SchemaBuilderInterface
 {
     /**
      * @var \cebe\openapi\spec\Schema[]
@@ -14,7 +17,7 @@ class SchemaBuilderStub implements SchemaBuilderInterface
     private $schemas;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \cebe\openapi\spec\Schema[] $schemas
      */
