@@ -24,6 +24,48 @@ final class PropertyInfoExtractorTest extends TestCase
      *
      * @return void
      */
+    public function testDualTypesNotCollection(): void
+    {
+        $propertyStub = new PropertyInfoExtractorStub([
+            new Type(
+                Type::BUILTIN_TYPE_STRING
+            ),
+            new Type(
+                Type::BUILTIN_TYPE_ARRAY,
+                false,
+                null,
+                true,
+                new Type(Type::BUILTIN_TYPE_INT),
+                new Type(Type::BUILTIN_TYPE_STRING)
+            ),
+        ]);
+
+        $retriever = $this->getRetriever($propertyStub);
+
+        $expected = [
+            new Type(
+                Type::BUILTIN_TYPE_STRING
+            ),
+            new Type(
+                Type::BUILTIN_TYPE_ARRAY,
+                false,
+                null,
+                true,
+                new Type(Type::BUILTIN_TYPE_INT),
+                new Type(Type::BUILTIN_TYPE_STRING)
+            ),
+        ];
+
+        $actual = $retriever->getTypes(PublicProperties::class, 'string');
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests that the property retriever retrieves properties.
+     *
+     * @return void
+     */
     public function testGetProperties(): void
     {
         $retriever = $this->getRetriever();
@@ -88,48 +130,6 @@ final class PropertyInfoExtractorTest extends TestCase
      *
      * @return void
      */
-    public function testDualTypesNotCollection(): void
-    {
-        $propertyStub = new PropertyInfoExtractorStub([
-            new Type(
-                Type::BUILTIN_TYPE_STRING
-            ),
-            new Type(
-                Type::BUILTIN_TYPE_ARRAY,
-                false,
-                null,
-                true,
-                new Type(Type::BUILTIN_TYPE_INT),
-                new Type(Type::BUILTIN_TYPE_STRING)
-            ),
-        ]);
-
-        $retriever = $this->getRetriever($propertyStub);
-
-        $expected = [
-            new Type(
-                Type::BUILTIN_TYPE_STRING
-            ),
-            new Type(
-                Type::BUILTIN_TYPE_ARRAY,
-                false,
-                null,
-                true,
-                new Type(Type::BUILTIN_TYPE_INT),
-                new Type(Type::BUILTIN_TYPE_STRING)
-            ),
-        ];
-
-        $actual = $retriever->getTypes(PublicProperties::class, 'string');
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * Tests that the property retriever retrieves properties.
-     *
-     * @return void
-     */
     public function testGetTypes(): void
     {
         $retriever = $this->getRetriever();
@@ -171,7 +171,7 @@ final class PropertyInfoExtractorTest extends TestCase
     /**
      * Returns the retriever under test.
      *
-     * @param null|PropertyInfoExtractorInterface $propertyInfo
+     * @param \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface|null $propertyInfo
      *
      * @return \LoyaltyCorp\ApiDocumenter\ClassUtils\PropertyInfoExtractor
      */
