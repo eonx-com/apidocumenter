@@ -10,6 +10,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor as BasePropertyInfoExtractor;
 use Tests\LoyaltyCorp\ApiDocumenter\TestCases\TestCase;
+use Tests\LoyaltyCorp\ApiDocumenter\Unit\SchemaBuilders\Fixtures\DoctrineObject;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\SchemaBuilders\Fixtures\EmptyClass;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\SchemaBuilders\Fixtures\PrivateProperties;
 use Tests\LoyaltyCorp\ApiDocumenter\Unit\SchemaBuilders\Fixtures\PublicProperties;
@@ -52,6 +53,12 @@ final class ClassFinderTest extends TestCase
             'search' => [EmptyClass::class],
             'expected' => [],
             'skip' => [EmptyClass::class],
+        ];
+
+        yield 'class with doctrine collection' => [
+            'search' => [DoctrineObject::class],
+            'expected' => [DoctrineObject::class, EmptyClass::class],
+            'skip' => [],
         ];
 
         yield 'public properties' => [
