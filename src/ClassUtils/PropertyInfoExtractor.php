@@ -3,11 +3,22 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\ApiDocumenter\ClassUtils;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\LazyCriteriaCollection;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
+use Symfony\Component\PropertyInfo\Type;
 
 /**
  * An overridden version of Symfony's PropertyInfoExtractor - we filter out
  * specific properties on an object if they're prefixed with an underscore.
+ *
+ * Additionally, we combine the Doctrine collection types and any annotated
+ * array collection type so that the Type returned matches what we expect.
+ *
+ * This means that we can annotate `Collection|Entity[]` and get back a single
+ * type of Collection that is a collection, that contains Entity values.
  */
 final class PropertyInfoExtractor implements PropertyInfoExtractorInterface
 {
@@ -82,6 +93,45 @@ final class PropertyInfoExtractor implements PropertyInfoExtractorInterface
      */
     public function getTypes($class, $property, ?array $context = null): ?array
     {
-        return $this->propertyInfo->getTypes($class, $property, $context ?? []);
+        static $doctrineCollections = [
+            ArrayCollection::class,
+            Collection::class,
+            LazyCriteriaCollection::class,
+            PersistentCollection::class,
+        ];
+
+        $types = $this->propertyInfo->getTypes($class, $property, $context ?? []);
+
+        if (\is_array($types) === false || \count($types) !== 2) {
+            return $types;
+        }
+
+        $doctrineType = null;
+        $collectionType = null;
+
+        foreach ($types as $type) {
+            if (\in_array($type->getClassName(), $doctrineCollections, true) === true) {
+                $doctrineType = $type;
+
+                continue;
+            }
+
+            if ($type->isCollection() === true) {
+                $collectionType = $type;
+            }
+        }
+
+        if ($doctrineType instanceof Type === true && $collectionType instanceof Type === true) {
+            return [new Type(
+                Type::BUILTIN_TYPE_OBJECT,
+                $doctrineType->isNullable(),
+                $doctrineType->getClassName(),
+                true,
+                $collectionType->getCollectionKeyType(),
+                $collectionType->getCollectionValueType()
+            )];
+        }
+
+        return $types;
     }
 }
