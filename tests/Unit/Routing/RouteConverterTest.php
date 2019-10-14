@@ -169,14 +169,27 @@ final class RouteConverterTest extends TestCase
             ],
         ];
 
+        $route3 = new Route(
+            TestController::class,
+            'method',
+            'GET',
+            '/other/{externalId}',
+            ['externalId']
+        );
+        $route3->setDescription('Other route');
+        $route3->setDeprecated(false);
+        $route3->setRequestType(Request::class);
+        $route3->setResponseType(Response::class);
+        $route3->setSummary('The real summary');
+
         yield 'single path' => [
-            'routes' => [$route2],
+            'routes' => [$route3],
             'pathItems' => [
-                '/path/{param}' => new PathItem([
+                '/other/{externalId}' => new PathItem([
                     'parameters' => [
                         new Parameter([
                             'in' => 'path',
-                            'name' => 'param',
+                            'name' => 'externalId',
                             'required' => true,
                             'schema' => [
                                 'type' => 'string',
@@ -185,7 +198,7 @@ final class RouteConverterTest extends TestCase
                     ],
                     'get' => new Operation([
                         'deprecated' => false,
-                        'description' => 'Description',
+                        'description' => 'Other route',
                         'requestBody' => new RequestBody([
                             'content' => [
                                 'application/json' => [
@@ -208,27 +221,27 @@ final class RouteConverterTest extends TestCase
                                 ],
                             ]),
                         ]),
-                        'summary' => 'Summary',
+                        'summary' => 'The real summary',
                     ]),
                 ]),
             ],
         ];
 
-        $route3 = new Route(
+        $route4 = new Route(
             TestController::class,
             'methodWithMultipleParams',
             'POST',
             '/path/{param}',
             ['param']
         );
-        $route3->setDescription('Description');
-        $route3->setDeprecated(true);
-        $route3->setRequestType(Request::class);
-        $route3->setResponseType(Response::class);
-        $route3->setSummary('Summary');
+        $route4->setDescription('Description');
+        $route4->setDeprecated(true);
+        $route4->setRequestType(Request::class);
+        $route4->setResponseType(Response::class);
+        $route4->setSummary('Summary');
 
         yield 'double methods' => [
-            'routes' => [$route2, $route3],
+            'routes' => [$route2, $route4],
             'pathItems' => [
                 '/path/{param}' => new PathItem([
                     'parameters' => [
