@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace LoyaltyCorp\ApiDocumenter\Documentation\Interfaces;
 
+use LoyaltyCorp\ApiDocumenter\Routing\RouteExamples;
+
 interface GeneratorInterface
 {
     /**
@@ -10,8 +12,9 @@ interface GeneratorInterface
      *
      * @param string $name
      * @param string $version
+     * @param \LoyaltyCorp\ApiDocumenter\Routing\RouteExamples|null $examples
      *
      * @return string
      */
-    public function generate(string $name, string $version): string;
+    public function generate(string $name, string $version, ?RouteExamples $examples = null): string;
 }
