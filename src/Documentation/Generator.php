@@ -11,6 +11,7 @@ use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\RoutesToSchemasConverterI
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteEnhancerInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteExtractorInterface;
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface;
+use LoyaltyCorp\ApiDocumenter\Routing\RouteExamples;
 
 final class Generator implements GeneratorInterface
 {
@@ -66,7 +67,7 @@ final class Generator implements GeneratorInterface
      *
      * @throws \cebe\openapi\exceptions\TypeErrorException
      */
-    public function generate(string $name, string $version): string
+    public function generate(string $name, string $version, ?RouteExamples $examples = null): string
     {
         $routes = $this->routeExtractor->getRoutes();
         foreach ($routes as $route) {
@@ -74,7 +75,7 @@ final class Generator implements GeneratorInterface
         }
 
         $schemas = $this->schemaConverter->convert($routes);
-        $paths = $this->pathItemConverter->convert($routes);
+        $paths = $this->pathItemConverter->convert($routes, $examples ?? new RouteExamples([]));
 
         $root = new OpenApi([
             'openapi' => static::TARGET_OPENAPI_VERSION,

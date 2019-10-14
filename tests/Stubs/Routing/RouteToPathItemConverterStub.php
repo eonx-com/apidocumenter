@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\LoyaltyCorp\ApiDocumenter\Stubs\Routing;
 
 use LoyaltyCorp\ApiDocumenter\Routing\Interfaces\RouteToPathItemConverterInterface;
+use LoyaltyCorp\ApiDocumenter\Routing\RouteExamples;
 
 /**
  * @coversNothing
@@ -28,7 +29,7 @@ final class RouteToPathItemConverterStub implements RouteToPathItemConverterInte
     /**
      * {@inheritdoc}
      */
-    public function convert(array $routes): array
+    public function convert(array $routes, RouteExamples $examples): array
     {
         return $this->pathItems;
     }
