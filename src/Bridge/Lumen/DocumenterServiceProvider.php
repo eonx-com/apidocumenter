@@ -5,6 +5,7 @@ namespace LoyaltyCorp\ApiDocumenter\Bridge\Lumen;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands\GenerateDocumentationCommand;
 use LoyaltyCorp\ApiDocumenter\ClassUtils\ClassFinder;
 use LoyaltyCorp\ApiDocumenter\ClassUtils\Interfaces\ClassFinderInterface;
 use LoyaltyCorp\ApiDocumenter\ClassUtils\PropertyInfoExtractor;
@@ -28,7 +29,11 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor as BasePropertyInfoExtractor;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Required to configure
@@ -75,6 +80,17 @@ final class DocumenterServiceProvider extends ServiceProvider
             );
         });
         $this->app->instance(DocBlockFactory::class, DocBlockFactory::createInstance());
+        $this->app->bind(GenerateDocumentationCommand::class, static function (Container $app) {
+            $serializer = new Serializer(
+                [new ObjectNormalizer(), new ArrayDenormalizer()],
+                [new JsonDecode()]
+            );
+
+            return new GenerateDocumentationCommand(
+                $app->make(GeneratorInterface::class),
+                $serializer
+            );
+        });
         $this->app->bind(GeneratorInterface::class, Generator::class);
         $this->app->bind(OpenApiTypeResolverInterface::class, OpenApiTypeResolver::class);
         $this->app->bind(PropertyTypeToSchemaConverterInterface::class, PropertyTypeToSchemaConverter::class);
