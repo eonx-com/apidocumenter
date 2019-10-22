@@ -5,6 +5,7 @@ namespace LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands;
 
 use Illuminate\Console\Command;
 use LoyaltyCorp\ApiDocumenter\Documentation\Interfaces\GeneratorInterface;
+use LoyaltyCorp\ApiDocumenter\Routing\RouteExample;
 use LoyaltyCorp\ApiDocumenter\Routing\RouteExamples;
 use RuntimeException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -66,7 +67,7 @@ final class GenerateDocumentationCommand extends Command
 
         $examples = $this->getExamples();
 
-        $output = $this->generator->generate($name, $version, $examples);
+        $output = $this->generator->generate($name, $version, new RouteExamples($examples));
 
         $this->output->write($output);
     }
@@ -95,33 +96,28 @@ final class GenerateDocumentationCommand extends Command
      * Parses an examples.json file (path specified in command) and returns a RouteExamples
      * object.
      *
-     * @return \LoyaltyCorp\ApiDocumenter\Routing\RouteExamples|null
+     * @return \LoyaltyCorp\ApiDocumenter\Routing\RouteExample[]
      */
-    private function getExamples(): ?RouteExamples
+    private function getExamples(): array
     {
         $path = $this->getArgument('examples');
 
         if (\is_string($path) === false || \file_exists($path) === false) {
-            return null;
+            return [];
         }
 
         $examples =  $this->serializer->deserialize(
             \file_get_contents($path),
-            RouteExamples::class,
+            \sprintf('%s[]', RouteExample::class),
             'json'
         );
 
-        // If the serialiser doesnt return the expected class we throw.
-        if ($examples instanceof RouteExamples === false) {
-            throw new RuntimeException('The serializer didnt return a RouteExamples object.');
+        if (\is_array($examples) === false) {
+            throw new RuntimeException('The serializer didnt return an array.');
         }
 
-        /**
-         * @var \LoyaltyCorp\ApiDocumenter\Routing\RouteExamples $examples
-         *
-         * @see https://youtrack.jetbrains.com/issue/WI-37859 - typehint required until PhpStorm recognises === check
-         */
-
-        return $examples;
+        return \array_filter($examples, static function ($example): bool {
+            return $example instanceof RouteExample === true;
+        });
     }
 }

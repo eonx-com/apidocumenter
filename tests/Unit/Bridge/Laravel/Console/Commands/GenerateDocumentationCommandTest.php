@@ -5,6 +5,7 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Bridge\Laravel\Console\Commands;
 
 use Illuminate\Console\OutputStyle;
 use LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands\GenerateDocumentationCommand;
+use LoyaltyCorp\ApiDocumenter\Routing\RouteExample;
 use LoyaltyCorp\ApiDocumenter\Routing\RouteExamples;
 use ReflectionClass;
 use RuntimeException;
@@ -82,19 +83,19 @@ final class GenerateDocumentationCommandTest extends TestCase
         ]));
         $output = new BufferedOutput();
 
-        $routeExamples = new RouteExamples([]);
+        $routeExamples = [new RouteExample('', '', '', null, null, 1, '')];
         $serializer = new SerializerStub($routeExamples);
         $expectedJson = [
             'data' => '{"example": "json"}
 ',
-            'type' => RouteExamples::class,
+            'type' => RouteExample::class.'[]',
             'format' => 'json',
             'context' => null,
         ];
         $expectedGenerate = [
             'name' => 'Application Name',
             'version' => '1.2.3',
-            'examples' => $routeExamples,
+            'examples' => new RouteExamples($routeExamples),
         ];
 
         $command = new GenerateDocumentationCommand($generator, $serializer);
@@ -109,7 +110,7 @@ final class GenerateDocumentationCommandTest extends TestCase
 
         $command->handle();
 
-        self::assertSame([$expectedGenerate], $generator->getCalls());
+        self::assertEquals([$expectedGenerate], $generator->getCalls());
         self::assertSame([$expectedJson], $serializer->getCalls());
         self::assertSame('generated output', $output->fetch());
     }
@@ -148,7 +149,7 @@ final class GenerateDocumentationCommandTest extends TestCase
         $outputProp->setValue($command, new OutputStyle($input, $output));
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('The serializer didnt return a RouteExamples object.');
+        $this->expectExceptionMessage('The serializer didnt return an array.');
 
         $command->handle();
     }
