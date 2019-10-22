@@ -5,6 +5,7 @@ namespace Tests\LoyaltyCorp\ApiDocumenter\Unit\Bridge\Lumen;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Laravel\Lumen\Routing\Router;
+use LoyaltyCorp\ApiDocumenter\Bridge\Laravel\Console\Commands\GenerateDocumentationCommand;
 use LoyaltyCorp\ApiDocumenter\Bridge\Lumen\DocumenterServiceProvider;
 use LoyaltyCorp\ApiDocumenter\Bridge\Lumen\LumenRouteExtractor;
 use LoyaltyCorp\ApiDocumenter\ClassUtils\ClassFinder;
@@ -66,6 +67,7 @@ final class DocumentationServiceProviderTest extends TestCase
         $bindings = [
             'apidocumenter_property_extractor' => PropertyInfoExtractor::class,
             ClassFinderInterface::class => ClassFinder::class,
+            GenerateDocumentationCommand::class => GenerateDocumentationCommand::class,
             GeneratorInterface::class => Generator::class,
             OpenApiTypeResolverInterface::class => OpenApiTypeResolver::class,
             PropertyTypeToSchemaConverterInterface::class => PropertyTypeToSchemaConverter::class,

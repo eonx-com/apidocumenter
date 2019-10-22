@@ -99,10 +99,6 @@ final class GenerateDocumentationCommand extends Command
      */
     private function getExamples(): ?RouteExamples
     {
-        if ($this->hasArgument('examples') === false) {
-            return null;
-        }
-
         $path = $this->getArgument('examples');
 
         if (\is_string($path) === false || \file_exists($path) === false) {
@@ -115,6 +111,7 @@ final class GenerateDocumentationCommand extends Command
             'json'
         );
 
+        // If the serialiser doesnt return the expected class we throw.
         if ($examples instanceof RouteExamples === false) {
             throw new RuntimeException('The serializer didnt return a RouteExamples object.');
         }
