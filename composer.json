@@ -19,7 +19,7 @@
     "symfony/serializer": "^4.3"
   },
   "require-dev": {
-    "eonx-com/standards": "^0.2",
+    "eonx-com/standards": "^0.2 || ^0.3",
     "friendsofphp/php-cs-fixer": "^2.9",
     "laravel/lumen-framework": "^6.1",
     "nikic/fast-route": "^1.3",
