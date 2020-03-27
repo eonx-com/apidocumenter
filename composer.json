@@ -13,7 +13,7 @@
     "ext-json": "*",
     "cebe/php-openapi": "^1.2",
     "doctrine/orm": "^2.6",
-    "eonx-com/utils": "^1.0",
+    "eonx-com/utils": "^1.0 || ^2.0",
     "phpdocumentor/reflection-docblock": "^4.3",
     "symfony/property-info": "^4.3",
     "symfony/serializer": "^4.3"
